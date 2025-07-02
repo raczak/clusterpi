@@ -20,7 +20,11 @@ This project provides a fully automated Bash script to:
 ## 🛠️ Prerequisites
 
 - Each Raspberry Pi must be flashed with **Raspberry Pi OS Lite** (32 or 64 bits depending on your model; check compatibility).
+
+> ⚠️ **Important:** You must be able to connect to each Raspberry Pi via SSH **without a password** (using an SSH key). This means the SSH private key from your installation machine (e.g., your MacBook or PC) must have its public part (`id_rsa.pub` or similar) copied to the `~/.ssh/authorized_keys` file of the user on each Pi. Password authentication is not supported by this script.
+
 - You must retrieve the IP addresses of all Raspberry Pi boards on your network before running the script.
+- You must have an SSH private key on your local machine that allows access to all Raspberry Pi nodes (the public part of this key must be present in `~/.ssh/authorized_keys` on each Pi). The script uses this key to connect to each Pi; by default, it expects `~/.ssh/id_rsa`, but you can modify the script to use another key if needed.
 - All Raspberry Pi accessible via SSH (same user, SSH key-based auth recommended)
 - Your user must have passwordless sudo on all Pis
 - The following tools must be installed on your local machine:

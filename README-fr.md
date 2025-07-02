@@ -1,14 +1,31 @@
 > 🇬🇧 This project is also available in English: [README.md](./README.md)
 
-# Installation d'un Cluster K3s sur Raspberry Pi
+# 🚀 Installation d'un Cluster K3s sur Raspberry Pi
 
 Déployez facilement un cluster Kubernetes (K3s) sur plusieurs Raspberry Pi grâce à un script unique.
 
 ---
 
-## 🚀 Objectif
+## Sommaire
 
-Ce projet fournit un script Bash entièrement automatisé pour :
+- [🚀 Installation d'un Cluster K3s sur Raspberry Pi](#-installation-dun-cluster-k3s-sur-raspberry-pi)
+  - [Sommaire](#sommaire)
+  - [🎯 Objectif](#-objectif)
+  - [🛠️ Prérequis](#️-prérequis)
+  - [⚡ Installation des dépendances](#-installation-des-dépendances)
+  - [🚦 Utilisation rapide](#-utilisation-rapide)
+  - [📝 Ce que fait le script](#-ce-que-fait-le-script)
+  - [📦 Exemple de sortie](#-exemple-de-sortie)
+  - [🛡️ Avertissement sécurité](#️-avertissement-sécurité)
+  - [🙏 Crédits](#-crédits)
+  - [👤 Auteur](#-auteur)
+  - [📬 Issues \& Contributions](#-issues--contributions)
+
+---
+
+## 🎯 Objectif
+
+Ce projet fournit un script Bash automatisé pour :
 
 - Préparer n'importe quel nombre de Raspberry Pi pour Kubernetes (activation des cgroups, désactivation du swap, configuration des hostnames, etc.)
 - Installer K3s sur le nœud maître
@@ -21,13 +38,15 @@ Ce projet fournit un script Bash entièrement automatisé pour :
 
 - Chaque Raspberry Pi doit être flashé avec **Raspberry Pi OS Lite** (32 ou 64 bits selon le modèle ; vérifiez la compatibilité).
 - Vous devez récupérer les adresses IP de tous les Raspberry Pi sur votre réseau avant d'utiliser le script.
-- Tous les Raspberry Pi doivent être accessibles en SSH (même utilisateur, authentification par clé SSH recommandée)
-- L'utilisateur doit avoir les droits sudo sans mot de passe sur tous les Pis
+
+> ⚠️ **Important :** Vous devez pouvoir vous connecter à chaque Raspberry Pi en SSH **sans mot de passe** (clé SSH). La clé privée SSH de votre machine d'installation (ex : MacBook ou PC) doit avoir sa partie publique (`id_rsa.pub` ou équivalent) copiée dans le fichier `~/.ssh/authorized_keys` de l'utilisateur sur chaque Pi. L'authentification par mot de passe n'est pas supportée.
+
+- L'utilisateur distant doit avoir les droits sudo **sans mot de passe** (le script s'en charge si besoin).
 - Les outils suivants doivent être installés sur votre machine locale :
 
 | Outil   | Rôle                        | Commande d'installation (Debian/Ubuntu)         |
 |---------|-----------------------------|-------------------------------------------------|
-| `k3sup` | Installation/join de K3s    | `curl -sLS https://get.k3sup.dev | sh`           |
+| `k3sup` | Installation/join de K3s    | `curl -sLS https://get.k3sup.dev \| sh`           |
 | `ssh`   | Exécution de commandes SSH  | Déjà installé sur la plupart des systèmes        |
 | `scp`   | Copie de fichiers via SSH   | Déjà installé sur la plupart des systèmes        |
 
@@ -43,7 +62,7 @@ sudo install -m 755 k3sup /usr/local/bin/
 
 ---
 
-## 📄 Utilisation
+## 🚦 Utilisation rapide
 
 1. **Clonez ce dépôt**
 2. **Configurez vos clés SSH et vérifiez l'accès à tous les Raspberry Pi**
@@ -57,6 +76,8 @@ sudo install -m 755 k3sup /usr/local/bin/
   --sleep-duration 60
 ```
 
+**Paramètres principaux :**
+
 - `--rpi-ips` : Liste des adresses IP des Raspberry Pi séparées par un espace (le premier est le master)
 - `--rpi-user` : Nom d'utilisateur SSH (doit avoir les droits sudo)
 - `--node-name-scheme` : Préfixe pour les noms de nœuds (ex : `rpi-node-` → `rpi-node-1`, `rpi-node-2`, ...)
@@ -66,7 +87,7 @@ sudo install -m 755 k3sup /usr/local/bin/
 
 ## 📝 Ce que fait le script
 
-1. **Active les cgroups** sur tous les Pis pour le support des conteneurs
+1. **Active les cgroups** sur tous les Pis (pour le support des conteneurs)
 2. **Désactive le swap** de façon permanente
 3. **Configure le sudo sans mot de passe** pour l'utilisateur
 4. **Définit un hostname unique** pour chaque Pi
@@ -96,10 +117,10 @@ sudo install -m 755 k3sup /usr/local/bin/
 
 ---
 
-## ⚠️ Avertissement sécurité
+## 🛡️ Avertissement sécurité
 
-**Ne jamais publier votre kubeconfig ou tout secret sur GitHub !**
-Ce fichier donne un accès complet à votre cluster.
+> **Ne jamais publier votre kubeconfig ou tout secret sur GitHub !**
+> Ce fichier donne un accès complet à votre cluster.
 
 ---
 
